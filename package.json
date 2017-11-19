@@ -1,6 +1,6 @@
 {
 	"name": "storm-widgets",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"main": "index.js",
 	"scripts": {
 		"start": "node node_modules/react-native/local-cli/cli.js start",
@@ -32,8 +32,8 @@
 		"graphql-tag": "^2.5.0",
 		"react-apollo": "^2.0.1",
 		"react-native-fbsdk": "^0.6.3",
-		"styled-components": ">=2.0.0",
 		"react-native-fetch-blob": "^0.10.8",
-		"react-native-image-picker": "^0.26.7"
+		"react-native-image-picker": "^0.26.7",
+		"styled-components": ">=2.0.0"
 	}
 }
