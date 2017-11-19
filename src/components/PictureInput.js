@@ -1,5 +1,5 @@
 import React from 'react';
-import { string, func, bool, arrayOf, number } from 'prop-types';
+import { string, func, bool, arrayOf, number, any } from 'prop-types';
 import { Image, View, TouchableOpacity, Text } from 'react-native';
 import Gradient from 'storm-common/src/components/Gradient'
 import styled from 'styled-components/native';
@@ -35,7 +35,6 @@ const ChangePictureButton = styled(TouchableOpacity)`
 `;
 const ChangePictureText = styled(Text)`
   font-size: 15px;
-  font-family: OpenSans-Semibold;
   color: ${props => props.color};
 `;
 const PreviewImage = styled(Image)`
@@ -87,20 +86,23 @@ const ProgressWrapper = styled(View)`
 
 const PictureInput = ({
   imageUrl,
-  selectImage,
+  pickImage,
   startUpload,
   uploading,
-  success,
+  uploadSuccess,
   placeholderImageSource,
   colors,
   progress,
   confirmButtonColor,
   changePictureColor,
+  progressBarColor,
+  data,
+  fileName,
 }) => {
   const showChangePicture = !!imageUrl && !uploading;
-  const showConfirm = (!!imageUrl && !uploading && !success);
+  const showConfirm = (!!imageUrl && !uploading && !uploadSuccess);
   const showProgress = uploading;
-  const showSuccess = success;
+  const showSuccess = uploadSuccess;
 
   return (
     <Wrapper >
@@ -109,7 +111,7 @@ const PictureInput = ({
           imageUrl
           ? <PreviewImage source={{ uri: imageUrl }} resizeMode="cover" />
           : (
-            <TouchableOpacity onPress={selectImage}>
+            <TouchableOpacity onPress={pickImage}>
               <StyledGradient colors={colors} start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }}>
                 <PictureTarget source={placeholderImageSource} resizeMode="contain" />
               </StyledGradient>
@@ -118,13 +120,14 @@ const PictureInput = ({
         }
         <Row>
           {showChangePicture &&
-            <ChangePictureButton onPress={selectImage}>
+            <ChangePictureButton onPress={pickImage}>
               <ChangePictureText color={changePictureColor}>TROCAR FOTO</ChangePictureText>
             </ChangePictureButton>
           }
           {showProgress &&
             <ProgressWrapper>
               <AnimatedProgressBar
+                color={progressBarColor}
                 progress={progress}
               />
             </ProgressWrapper>
@@ -139,7 +142,7 @@ const PictureInput = ({
       </StyledPanel>
       {showConfirm &&
         <ConfirmButton
-          onPress={startUpload}
+          onPress={() => startUpload(data, fileName)}
           color={confirmButtonColor}
         >
           <ButtonImage source={checkmarkImageSource} resizeMode="contain" />
@@ -152,21 +155,31 @@ const PictureInput = ({
 
 
 PictureInput.propTypes = {
+  pickImage: func.isRequired,
+  startUpload: func.isRequired,
+
   imageUrl: string,
+  data: string,
+  fileName: string,
+
   uploading: bool.isRequired,
-  success: bool.isRequired,
+  progress: number,
+  uploadSuccess: bool.isRequired,
+  uploadError: any,
+
   colors: arrayOf(string).isRequired,
   placeholderImageSource: Image.propTypes.source.isRequired,
-  selectImage: func.isRequired,
-  startUpload: func.isRequired,
-  progress: number,
   confirmButtonColor: string.isRequired,
   changePictureColor: string.isRequired,
+  progressBarColor: string.isRequired,
 };
 
 PictureInput.defaultProps = {
   imageUrl: null,
+  uploadError: null,
   progress: 0,
+  data: null,
+  fileName: null,
 };
 
 export default PictureInput
