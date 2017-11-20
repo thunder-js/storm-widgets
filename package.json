@@ -34,6 +34,7 @@
 		"react-native-fbsdk": "^0.6.3",
 		"react-native-fetch-blob": "^0.10.8",
 		"react-native-image-picker": "^0.26.7",
-		"styled-components": ">=2.0.0"
+		"styled-components": ">=2.0.0",
+		"react-native-google-places": "^2.4.2"
 	}
 }
